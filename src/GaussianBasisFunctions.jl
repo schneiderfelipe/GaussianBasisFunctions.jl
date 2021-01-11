@@ -4,7 +4,6 @@ using LinearAlgebra: Symmetric
 
 export Molecule
 export GaussianBasisFunction
-export doublefactorial
 export build_sto3g
 export overlap
 
