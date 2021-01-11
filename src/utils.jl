@@ -23,6 +23,17 @@ function doublefactorial(n)
 end
 
 """
+	dist(x, y)
+
+Compute the distance between vectors or Gaussian basis functions.
+
+The base implementation might change in the future, or use anoter package for
+it.
+"""
+dist(x, y) = sqrt(sum((xi - yi)^2 for (xi, yi) in zip(x, y)))
+dist(a::GaussianBasisFunction, b::GaussianBasisFunction) = dist(a.coord, b.coord)
+
+"""
 	build_sto3g(molecule::AbstractMolecule)
 
 Build a STO-3G basis set for the given molecule.

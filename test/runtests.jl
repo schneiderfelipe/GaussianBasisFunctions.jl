@@ -5,9 +5,9 @@ using Test
     include("test_types.jl")
 
     include("test_doublefactorial.jl")
-    include("test_build_sto3g.jl")
-
+    include("test_dist.jl")
     include("test_private_functions.jl")
 
+    include("test_build_sto3g.jl")
     include("test_overlap.jl")
 end
