@@ -4,4 +4,4 @@ authors = ["Felipe S. S. Schneider <schneider.felipe@posgrad.ufsc.br> and contri
 version = "0.1.0"
 
 [compat]
-julia = "1"
+julia = "1.2"
