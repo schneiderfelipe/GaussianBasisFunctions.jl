@@ -1,4 +1,4 @@
-@testset "concrete_types.jl" begin
+@time @testset "types" begin
     # Test Base.length
     basis = GaussianBasisFunction(
         [0, 0, 0],

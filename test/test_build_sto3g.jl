@@ -1,11 +1,8 @@
-@testset "utils.jl" begin
-    # Test doublefactorial
-    @test doublefactorial(5) == 15
-    @test doublefactorial(6) == 48
-    @test doublefactorial(7) == 105
-
-    # Test build_sto3g
-    hydrogen = Molecule([1], [0 0 0]')
+@time @testset "build_sto3g" begin
+    hydrogen = Molecule(
+        [1],
+        [0 0 0]',
+    )
     basisset = build_sto3g(hydrogen)
     @test basisset[1].coord == [0, 0, 0]
     @test basisset[1].alphas == [3.425250914, 0.6239137298, 0.168855404]
@@ -14,7 +11,11 @@
     @test basisset[1].m == 0
     @test basisset[1].n == 0
 
-    carbon_monoxide = Molecule([6, 8], [0 0 0; 0 0 1.128]')
+    carbon_monoxide = Molecule(
+        [6, 8],
+        [0.000 0.000 0.000;
+         0.000 0.000 1.128]',
+    )
     basisset = build_sto3g(carbon_monoxide)
     @test length(basisset) == 10
     @test basisset[1].coord == [0, 0, 0]

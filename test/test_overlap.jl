@@ -1,17 +1,4 @@
-@testset "one_electron_integrals.jl" begin
-    α = 1.0
-
-    # Test _compute_primitive_norm_constant
-    @test GaussianBasisFunctions._compute_primitive_norm_constant(
-        α, 0, 0, 0
-    ) == 0.7127054703549902
-
-    # Test _compute_primitive_third_center
-    @test GaussianBasisFunctions._compute_primitive_third_center(
-        α, [0, 0, 0], 1.0, [0, 0, 1.128]
-    ) == [0, 0, 1.128 / 2]
-
-    # Test overlap
+@time @testset "overlap" begin
     water = Molecule(
         [8, 1, 1],
         [0.00000  0.00000  0.22700;

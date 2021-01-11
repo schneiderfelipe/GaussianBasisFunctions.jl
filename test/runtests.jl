@@ -1,9 +1,13 @@
 using GaussianBasisFunctions
 using Test
 
-@testset "GaussianBasisFunctions.jl" begin
-    include("test_concrete_types.jl")
+@time @testset "GaussianBasisFunctions.jl" begin
+    include("test_types.jl")
 
-    include("test_utils.jl")
-    include("test_one_electron_integrals.jl")
+    include("test_doublefactorial.jl")
+    include("test_build_sto3g.jl")
+
+    include("test_private_functions.jl")
+
+    include("test_overlap.jl")
 end
