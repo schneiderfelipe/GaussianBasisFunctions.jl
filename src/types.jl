@@ -1,11 +1,18 @@
+abstract type AbstractMolecule end
+
 """
 Molecule with atomic numbers and coordinates as columns of a matrix.
+
+In the future this will include charge and multiplicity as well.
 """
-struct Molecule{V, M} <: AbstractMolecule
+# TODO: create a package for input/output of molecular structures
+struct Molecule{V, W} <: AbstractMolecule
 	numbers::V
-	coords::M
+	coords::W
 end
 Base.length(m::Molecule) = length(m.numbers)
+
+abstract type AbstractBasisFunction end
 
 """
 Gaussian basis function with coordinate, alphas, coefficients and angular
