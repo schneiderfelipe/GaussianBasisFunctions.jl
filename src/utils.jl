@@ -83,33 +83,33 @@ function build_sto3g(molecule::AbstractMolecule)
 					coord,
 					alphas_sto3g[number][:, 1],
 					coeffs_sto3g[:, 1],
-					(0, 0, 0),
+					0, 0, 0,
 				))
 			elseif orbital == "2s"
 				push!(sto3g, GaussianBasisFunction(
 					coord,
 					alphas_sto3g[number][:, 2],
 					coeffs_sto3g[:, 2],
-					(0, 0, 0),
+					0, 0, 0,
 				))
 			elseif orbital == "2p"
 				push!(sto3g, GaussianBasisFunction(
 					coord,
 					alphas_sto3g[number][:, 2],
 					coeffs_sto3g[:, 3],
-					(1, 0, 0),
+					1, 0, 0,
 				))
 				push!(sto3g, GaussianBasisFunction(
 					coord,
 					alphas_sto3g[number][:, 2],
 					coeffs_sto3g[:, 3],
-					(0, 1, 0),
+					0, 1, 0,
 				))
 				push!(sto3g, GaussianBasisFunction(
 					coord,
 					alphas_sto3g[number][:, 2],
 					coeffs_sto3g[:, 3],
-					(0, 0, 1),
+					0, 0, 1,
 				))
 			else
 				error("Orbital $orbital not implemented for atomic number $number")
