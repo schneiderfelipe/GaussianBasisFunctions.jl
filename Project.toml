@@ -1,0 +1,7 @@
+name = "GaussianBasisFunctions"
+uuid = "33e5f18f-b1fa-4322-8c4c-5262e439dbe6"
+authors = ["Felipe S. S. Schneider <schneider.felipe@posgrad.ufsc.br> and contributors"]
+version = "0.1.0"
+
+[compat]
+julia = "1"
