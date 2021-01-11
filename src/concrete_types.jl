@@ -5,6 +5,7 @@ struct Molecule{V, M} <: AbstractMolecule
 	numbers::V
 	coords::M
 end
+Base.length(m::Molecule) = length(m.numbers)
 
 """
 Gaussian basis function with coordinate, alphas, coefficients and angular

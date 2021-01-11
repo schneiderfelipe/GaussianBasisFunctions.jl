@@ -76,7 +76,10 @@ function build_sto3g(molecule::AbstractMolecule)
 	 	 			 0.1559162750e+00 0.6076837186e+00 0.3919573931e+00]'  # all 2p
 
 	sto3g = GaussianBasisFunction[]
-	for (number, coord) in zip(molecule.numbers, eachcol(molecule.coords))
+	for i in 1:length(molecule)
+		number = molecule.numbers[i]
+		coord = molecule.coords[:, i]
+
 		for orbital in orbitalconfig(number)
 			if orbital == "1s"
 				push!(sto3g, GaussianBasisFunction(
