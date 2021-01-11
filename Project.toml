@@ -3,5 +3,8 @@ uuid = "33e5f18f-b1fa-4322-8c4c-5262e439dbe6"
 authors = ["Felipe S. S. Schneider <schneider.felipe@posgrad.ufsc.br> and contributors"]
 version = "0.1.0"
 
+[deps]
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+
 [compat]
 julia = "1.2"
