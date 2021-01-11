@@ -20,3 +20,4 @@ struct GaussianBasisFunction{A, B} <: AbstractBasisFunction
 	coeffs::B
 	anguls::NTuple{3, <:Integer}
 end
+Base.length(a::GaussianBasisFunction) = length(a.coeffs)
