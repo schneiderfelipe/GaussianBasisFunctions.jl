@@ -1,4 +1,4 @@
-@time @testset "private functions" begin
+@time @testset "auxiliary" begin
     α = 1.0
 
     # Test _compute_primitive_norm_constant

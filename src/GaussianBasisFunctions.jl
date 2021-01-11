@@ -12,6 +12,8 @@ include("types.jl")
 
 include("utils.jl")
 
+include("build_sto3g.jl")
+
 include("auxiliary.jl")
 include("overlap.jl")
 
