@@ -2,5 +2,5 @@ using GaussianBasisFunctions
 using Test
 
 @testset "GaussianBasisFunctions.jl" begin
-    # Write your tests here.
+    include("test_build_sto3g.jl")
 end
