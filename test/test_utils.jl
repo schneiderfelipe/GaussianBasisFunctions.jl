@@ -1,4 +1,8 @@
-@testset "build_sto3g" begin
+@testset "utils.jl" begin
+    @test doublefactorial(5) == 15
+    @test doublefactorial(6) == 48
+    @test doublefactorial(7) == 105
+
     hydrogen = Molecule([1], [0 0 0]')
     basisset = build_sto3g(hydrogen)
     @test basisset[1].coord == [0, 0, 0]

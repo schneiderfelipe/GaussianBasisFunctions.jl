@@ -2,6 +2,7 @@ module GaussianBasisFunctions
 
 export Molecule
 export GaussianBasisFunction
+export doublefactorial
 export build_sto3g
 
 include("abstract_types.jl")
