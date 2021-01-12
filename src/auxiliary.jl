@@ -6,9 +6,17 @@ function _compute_primitive_norm_constant(alpha, l, m, n)
     return sqrt(N)
 end
 
-function _compute_primitive_third_center(alpha, alpha_coord, beta, beta_coord)
-    gamma = alpha + beta
+"""
+    _third_center(alpha, alpha_coord, beta, beta_coord, gamma)
 
+Compute a weighted center for two Gaussian primitives.
+
+This is the center from the Gaussian product theorem. `gamma` must be equal to
+`alpha + beta`.
+"""
+# TODO: make this function faster; using StaticArrays for molecule
+# coordinates might do the thing!
+function _third_center(alpha, alpha_coord, beta, beta_coord, gamma)
     return (alpha * alpha_coord + beta * beta_coord) / gamma
 end
 

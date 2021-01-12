@@ -38,7 +38,9 @@ function overlap(a::GaussianBasisFunction, b::GaussianBasisFunction)
             # TODO: the following has an extra unneeded ^2
             K_p = exp(-(alpha * beta / gamma) * dist(a, b)^2)
 
-            p_coord = _compute_primitive_third_center(alpha, a.coord, beta, b.coord)
+            # NOTE: bottleneck of this function
+            p_coord = _third_center(alpha, a.coord, beta, b.coord, gamma)
+
             pa = p_coord - a.coord
             pb = p_coord - b.coord
             S_x = _compute_Si(a.l, b.l, pa[1], pb[1], gamma)
