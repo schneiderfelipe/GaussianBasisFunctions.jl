@@ -1,7 +1,8 @@
 @time @testset "build_sto3g" begin
+    # Test for a single atom
     hydrogen = Molecule(
         [1],
-        [0 0 0]',
+        [0.0 0.0 0.0]',
     )
     basis = build_sto3g(hydrogen)
     @test basis[1].coord == [0, 0, 0]

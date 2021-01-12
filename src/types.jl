@@ -6,7 +6,7 @@ Molecule with atomic numbers and coordinates as columns of a matrix.
 In the future this will include charge and multiplicity as well.
 """
 # TODO: create a package for input/output of molecular structures
-struct Molecule{V, W} <: AbstractMolecule
+struct Molecule{V, W <: AbstractMatrix{<:AbstractFloat}} <: AbstractMolecule
 	numbers::V
 	coords::W
 end
