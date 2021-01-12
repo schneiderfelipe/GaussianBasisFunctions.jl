@@ -31,23 +31,23 @@ function oei(a::GaussianBasisFunction, b::GaussianBasisFunction, ::KineticOperat
 end
 
 function _kinetic_kernel(alpha, a_coord, a_l, a_m, a_n, beta, b_coord, b_l, b_m, b_n)
-    return beta * ((2 * (b_l + b_m + b_n) + 3) * _overlap_kernel(
+    l0 = (2 * (b_l + b_m + b_n) + 3) * _overlap_kernel(
         alpha, a_coord, a_l, a_m, a_n, beta, b_coord, b_l, b_m, b_n
-    ) - 2 * beta * (
-        _overlap_kernel(
-            alpha, a_coord, a_l, a_m, a_n, beta, b_coord, b_l + 2, b_m, b_n
-        ) + _overlap_kernel(
-            alpha, a_coord, a_l, a_m, a_n, beta, b_coord, b_l, b_m + 2, b_n
-        ) + _overlap_kernel(
-            alpha, a_coord, a_l, a_m, a_n, beta, b_coord, b_l, b_m, b_n + 2
-        )
-    )) - (
-        b_l * (b_l - one(b_l)) * _overlap_kernel(
-            alpha, a_coord, a_l, a_m, a_n, beta, b_coord, b_l - 2, b_m, b_n
-        ) + b_m * (b_m - one(b_m)) * _overlap_kernel(
-            alpha, a_coord, a_l, a_m, a_n, beta, b_coord, b_l, b_m - 2, b_n
-        ) + b_n * (b_n - one(b_n)) * _overlap_kernel(
-            alpha, a_coord, a_l, a_m, a_n, beta, b_coord, b_l, b_m, b_n - 2
-        )
-    ) / 2
+    )
+    lplus2 = _overlap_kernel(
+        alpha, a_coord, a_l, a_m, a_n, beta, b_coord, b_l + 2, b_m, b_n
+    ) + _overlap_kernel(
+        alpha, a_coord, a_l, a_m, a_n, beta, b_coord, b_l, b_m + 2, b_n
+    ) + _overlap_kernel(
+        alpha, a_coord, a_l, a_m, a_n, beta, b_coord, b_l, b_m, b_n + 2
+    )
+    lminus2 = b_l * (b_l - one(b_l)) * _overlap_kernel(
+        alpha, a_coord, a_l, a_m, a_n, beta, b_coord, b_l - 2, b_m, b_n
+    ) + b_m * (b_m - one(b_m)) * _overlap_kernel(
+        alpha, a_coord, a_l, a_m, a_n, beta, b_coord, b_l, b_m - 2, b_n
+    ) + b_n * (b_n - one(b_n)) * _overlap_kernel(
+        alpha, a_coord, a_l, a_m, a_n, beta, b_coord, b_l, b_m, b_n - 2
+    )
+
+    return beta * (l0 - 2 * beta * lplus2) - lminus2 / 2
 end
