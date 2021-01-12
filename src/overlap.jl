@@ -42,9 +42,9 @@ Compute the overlap between two primitive Gaussian basis functions.
 
     gamma = alpha + beta
 
-    # TODO: the three lines below benefit from inplace operations (in order
-    # to avoid allocations). This could be accomplished by reusing
-    # intermediate vectors.
+    # TODO: the three lines below are bottlenecks and might benefit from
+    # inplace operations (in order to avoid allocations). This could be
+    # accomplished by reusing intermediate vectors by the caller.
     p_coord = _third_center(alpha, a_coord, beta, b_coord, gamma)
     pa = @. p_coord - a_coord
     pb = @. p_coord - b_coord

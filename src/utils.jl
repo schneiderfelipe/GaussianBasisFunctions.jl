@@ -30,5 +30,11 @@ Compute the distance between vectors or Gaussian basis functions.
 The base implementation might change in the future, or use anoter package for
 it.
 """
-dist(x, y) = sqrt(sum((xi - yi)^2 for (xi, yi) in zip(x, y)))
+function dist(x, y)
+	s = zero(x[1])
+	for i in 1:length(x)
+		s += (x[i] - y[i])^2
+	end
+    return sqrt(s)
+end
 dist(a::GaussianBasisFunction, b::GaussianBasisFunction) = dist(a.coord, b.coord)
