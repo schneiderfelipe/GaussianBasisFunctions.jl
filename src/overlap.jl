@@ -1,18 +1,20 @@
 # This assumes real basis functions, should we have
 # `RealBasisFunction <: AbstractBasisFunction`?
 """
-    overlap(basis::Vector{<:AbstractBasisFunction})
+    overlap(basis::AbstractVector{<:AbstractBasisFunction})
 
 Computes an overlap matrix for a basis set.
 """
-function overlap(basis::Vector{<:AbstractBasisFunction})
+function overlap(basis::AbstractVector{<:AbstractBasisFunction})
     n = length(basis)
-    # TODO: generalize types
-    S = Matrix{Float64}(undef, n, n)
 
-    # TODO: avoid calculating the diagonal
+    T = typeof(basis[1].coeffs[1])
+    S = Matrix{T}(undef, n, n)
+
     for j in 1:n, i in 1:j
-        # We assume overlap(a, a) returns 1
+        # We assume overlap(a, a) trivially returns one.
+
+        # NOTE: bottleneck of this function
         S[i, j] = overlap(basis[i], basis[j])
     end
 

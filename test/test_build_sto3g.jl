@@ -12,6 +12,7 @@
     @test basis[1].m == 0
     @test basis[1].n == 0
 
+    # Test for a simple diatomic molecule
     carbon_monoxide = Molecule(
         [6, 8],
         [0.000 0.000 0.000;

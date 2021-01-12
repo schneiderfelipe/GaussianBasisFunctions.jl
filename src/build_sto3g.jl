@@ -14,9 +14,8 @@ function build_sto3g(molecule::AbstractMolecule)
 	# Auxiliary function for checking which orbitals an element requires
 	orbitalconfig(number) = number < 3 ? ["1s"] : ["1s", "2s", "2p"]
 
-	# This stores `alphas` for elements up to neon
-	# TODO: generalize types
-	alphas_sto3g = Array{Float64, 2}[]
+	T = typeof(molecule.coords[1])
+	alphas_sto3g = Matrix{T}[]  # `alphas` for elements up to neon
 
 	# H
 	push!(alphas_sto3g, [0.3425250914e+01 0.6239137298e+00 0.1688554040e+00]')  # 1st shell
