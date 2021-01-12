@@ -1,5 +1,10 @@
 # This assumes real basis functions, should we have
 # `RealBasisFunction <: AbstractBasisFunction`?
+"""
+    overlap(basis::Vector{<:AbstractBasisFunction})
+
+Computes an overlap matrix for a basis set.
+"""
 function overlap(basis::Vector{<:AbstractBasisFunction})
     n = length(basis)
     # TODO: generalize types
@@ -17,6 +22,11 @@ end
 
 # TODO: create a generic, numerically integrated, fallback for any callable
 # objects
+"""
+    overlap(a::GaussianBasisFunction, b::GaussianBasisFunction)
+
+Computes an overlap matrix element for a pair of basis functions.
+"""
 function overlap(a::GaussianBasisFunction, b::GaussianBasisFunction)
     if a == b
         # We assume we're working with normalized basis functions.
@@ -26,12 +36,12 @@ function overlap(a::GaussianBasisFunction, b::GaussianBasisFunction)
     res = zero(a.coeffs[1])
     for i in 1:length(a)
         alpha = a.alphas[i]
-        N_a = _compute_primitive_norm_constant(alpha, a.l, a.m, a.n)
+        N_a = _normalization_constant(alpha, a.l, a.m, a.n)
 
         term = zero(res)
         for j in 1:length(b)
             beta = b.alphas[j]
-            N_b = _compute_primitive_norm_constant(beta, b.l, b.m, b.n)
+            N_b = _normalization_constant(beta, b.l, b.m, b.n)
 
             gamma = alpha + beta
 
@@ -43,9 +53,9 @@ function overlap(a::GaussianBasisFunction, b::GaussianBasisFunction)
 
             pa = p_coord - a.coord
             pb = p_coord - b.coord
-            S_x = _compute_Si(a.l, b.l, pa[1], pb[1], gamma)
-            S_y = _compute_Si(a.m, b.m, pa[2], pb[2], gamma)
-            S_z = _compute_Si(a.n, b.n, pa[3], pb[3], gamma)
+            S_x = _Si(a.l, b.l, pa[1], pb[1], gamma)
+            S_y = _Si(a.m, b.m, pa[2], pb[2], gamma)
+            S_z = _Si(a.n, b.n, pa[3], pb[3], gamma)
 
             term += b.coeffs[j] * N_b * K_p * S_x * S_y * S_z
         end
