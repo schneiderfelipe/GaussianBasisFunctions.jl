@@ -35,6 +35,9 @@ function overlap(a::GaussianBasisFunction, b::GaussianBasisFunction)
         return one(a.coeffs[1])
     end
 
+    # TODO: can we speed up if invert a and b based on the number of
+    # primitives?
+
     res = zero(a.coeffs[1])
     for i in 1:length(a)
         alpha = a.alphas[i]
@@ -45,25 +48,37 @@ function overlap(a::GaussianBasisFunction, b::GaussianBasisFunction)
             beta = b.alphas[j]
             N_b = _normalization_constant(beta, b.l, b.m, b.n)
 
-            gamma = alpha + beta
-
-            # TODO: the following has an extra unneeded ^2
-            K_p = exp(-(alpha * beta / gamma) * dist(a, b)^2)
-
-            # NOTE: bottleneck of this function
-            p_coord = _third_center(alpha, a.coord, beta, b.coord, gamma)
-
-            pa = p_coord - a.coord
-            pb = p_coord - b.coord
-            S_x = _Si(a.l, b.l, pa[1], pb[1], gamma)
-            S_y = _Si(a.m, b.m, pa[2], pb[2], gamma)
-            S_z = _Si(a.n, b.n, pa[3], pb[3], gamma)
-
-            term += b.coeffs[j] * N_b * K_p * S_x * S_y * S_z
+            term += b.coeffs[j] * N_b * _primitive_overlap(
+                alpha, a.coord, a.l, a.m, a.n, beta, b.coord, b.l, b.m, b.n
+            )
         end
 
         res += a.coeffs[i] * N_a * term
     end
 
     return res
+end
+
+"""
+    _primitive_overlap(alpha, a_coord, a_l, a_m, a_n, beta, b_coord, b_l, b_m, b_n)
+
+Compute the overlap between two primitive Gaussian basis functions.
+"""
+function _primitive_overlap(alpha, a_coord, a_l, a_m, a_n, beta, b_coord, b_l, b_m, b_n)
+    gamma = alpha + beta
+
+    # NOTE: bottleneck of this function
+    p_coord = _third_center(alpha, a_coord, beta, b_coord, gamma)
+
+    pa = p_coord - a_coord
+    pb = p_coord - b_coord
+
+    S_x = _Si(a_l, b_l, pa[1], pb[1], gamma)
+    S_y = _Si(a_m, b_m, pa[2], pb[2], gamma)
+    S_z = _Si(a_n, b_n, pa[3], pb[3], gamma)
+
+    # TODO: the following has an extra unneeded ^2
+    K_p = exp(-(alpha * beta / gamma) * dist(a_coord, b_coord)^2)
+
+    return K_p * S_x * S_y * S_z
 end
