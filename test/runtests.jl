@@ -11,4 +11,5 @@ using Test
 
     include("test_auxiliary.jl")
     include("test_overlap.jl")
+    include("test_kinetic.jl")
 end
