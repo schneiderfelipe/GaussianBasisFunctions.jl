@@ -18,8 +18,12 @@ end
 # TODO: create a generic, numerically integrated, fallback for any callable
 # objects
 function overlap(a::GaussianBasisFunction, b::GaussianBasisFunction)
-    res = zero(a.coeffs[1])
+    if a == b
+        # We assume we're working with normalized basis functions.
+        return one(a.coeffs[1])
+    end
 
+    res = zero(a.coeffs[1])
     for i in 1:length(a)
         alpha = a.alphas[i]
         N_a = _compute_primitive_norm_constant(alpha, a.l, a.m, a.n)
