@@ -47,9 +47,9 @@ function build_sto3g(molecule::AbstractMolecule)
 						 0.8246315120e+01 0.1916266291e+01 0.6232292721e+00]')
 
 	# Contraction coefficients that applies to all atoms
-	coeffs_sto3g = [ 0.1543289673e+00 0.5353281423e+00 0.4446345422e+00;   # 1s
-	 	 			-0.9996722919e-01 0.3995128261e+00 0.7001154689e+00;   # 2s
-	 	 			 0.1559162750e+00 0.6076837186e+00 0.3919573931e+00]'  # all 2p
+	coeffs_sto3g = [0.1543289673e+00 0.5353281423e+00 0.4446345422e+00;   # 1s
+				   -0.9996722919e-01 0.3995128261e+00 0.7001154689e+00;   # 2s
+					0.1559162750e+00 0.6076837186e+00 0.3919573931e+00]'  # all 2p
 
 	sto3g = GaussianBasisFunction[]
 	for i in 1:length(molecule)
