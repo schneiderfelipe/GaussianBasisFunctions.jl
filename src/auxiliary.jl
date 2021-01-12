@@ -6,7 +6,7 @@ Compute a Gaussian primitive normalization constant.
 function _normalization_constant(alpha, l, m, n)
     N = sqrt((2alpha / π)^3)
     N *= (4alpha)^(l + m + n)
-    N /= doublefactorial(2l - 1) * doublefactorial(2m - 1) * doublefactorial(2n - 1)
+    N /= doublefactorial(2l - one(l)) * doublefactorial(2m - one(m)) * doublefactorial(2n - one(n))
 
     return sqrt(N)
 end
@@ -61,7 +61,7 @@ function _Si(i_a, i_b, pa_i, pb_i, gamma)
     res = zero(pa_i)
 
     for k in 0:floor(Int, (i_a + i_b) / 2)
-        factor = sqrt(π / gamma) * doublefactorial(2k - 1) / (2gamma)^k
+        factor = sqrt(π / gamma) * doublefactorial(2k - one(k)) / (2gamma)^k
 
         res += factor * _ck(2k, i_a, i_b, pa_i, pb_i)
     end
