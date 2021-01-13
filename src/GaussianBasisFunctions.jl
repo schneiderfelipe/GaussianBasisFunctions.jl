@@ -1,11 +1,14 @@
 module GaussianBasisFunctions
 
 using LinearAlgebra: Symmetric
+using SpecialFunctions: gamma
+using SpecialFunctions: gamma_inc
 
 export Molecule
 export GaussianBasisFunction
 export OverlapOperator
 export KineticOperator
+export NuclearOperator
 
 export build_sto3g
 
@@ -24,5 +27,6 @@ include("auxiliary.jl")
 include("oei.jl")
 include("overlap.jl")
 include("kinetic.jl")
+include("nuclear.jl")
 
 end
