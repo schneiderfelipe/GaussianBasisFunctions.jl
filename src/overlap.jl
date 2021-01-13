@@ -5,7 +5,7 @@
 """
     oei(a::GaussianBasisFunction, b::GaussianBasisFunction, ::OverlapOperator)
 
-Computes an overlap matrix element for a pair of basis functions.
+Compute an overlap matrix element for a pair of basis functions.
 """
 function oei(a::GaussianBasisFunction, b::GaussianBasisFunction, ::OverlapOperator)
     # TODO: can we speed up if invert a and b based on the number of
@@ -33,11 +33,11 @@ function oei(a::GaussianBasisFunction, b::GaussianBasisFunction, ::OverlapOperat
 end
 
 """
-    _overlap_kernel(alpha, a_coord, a_l, a_m, a_n, beta, b_coord, b_l, b_m, b_n)
+    _overlap_kernel(alpha, a_coord, la, ma, na, beta, b_coord, lb, mb, nb)
 
 Compute the overlap between two primitive Gaussian basis functions.
 """
-@inline function _overlap_kernel(alpha, a_coord, a_l, a_m, a_n, beta, b_coord, b_l, b_m, b_n)
+@inline function _overlap_kernel(alpha, a_coord, la, ma, na, beta, b_coord, lb, mb, nb)
     # TODO: should we compare inputs and return one if they are the same?
 
     gamma = alpha + beta
@@ -49,12 +49,11 @@ Compute the overlap between two primitive Gaussian basis functions.
     pa = @. p_coord - a_coord
     pb = @. p_coord - b_coord
 
-    S_x = _Si(a_l, b_l, pa[1], pb[1], gamma)
-    S_y = _Si(a_m, b_m, pa[2], pb[2], gamma)
-    S_z = _Si(a_n, b_n, pa[3], pb[3], gamma)
+    K_p = _gaussian_prod_factor(alpha, a_coord, beta, b_coord, gamma)
 
-    # TODO: the following has an extra unneeded ^2
-    K_p = exp(-(alpha * beta / gamma) * dist(a_coord, b_coord)^2)
+    S_x = _Si(la, lb, pa[1], pb[1], gamma)
+    S_y = _Si(ma, mb, pa[2], pb[2], gamma)
+    S_z = _Si(na, nb, pa[3], pb[3], gamma)
 
     return K_p * S_x * S_y * S_z
 end

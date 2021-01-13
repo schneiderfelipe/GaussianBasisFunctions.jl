@@ -1,7 +1,7 @@
 """
 	doublefactorial(n)
 
-Computes the exact
+Compute the exact
 [double factorial n!!](https://en.wikipedia.org/wiki/Double_factorial).
 
 This implementation is not suited for large n (n <= 33) as it might overflow.

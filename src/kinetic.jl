@@ -3,7 +3,7 @@
 """
     oei(a::GaussianBasisFunction, b::GaussianBasisFunction, ::KineticOperator)
 
-Computes a kinetic energy matrix element for a pair of basis functions.
+Compute a kinetic energy matrix element for a pair of basis functions.
 """
 function oei(a::GaussianBasisFunction, b::GaussianBasisFunction, ::KineticOperator)
     # TODO: can we speed up if invert a and b based on the number of
@@ -30,23 +30,23 @@ function oei(a::GaussianBasisFunction, b::GaussianBasisFunction, ::KineticOperat
     return res
 end
 
-function _kinetic_kernel(alpha, a_coord, a_l, a_m, a_n, beta, b_coord, b_l, b_m, b_n)
-    l0 = (2 * (b_l + b_m + b_n) + 3) * _overlap_kernel(
-        alpha, a_coord, a_l, a_m, a_n, beta, b_coord, b_l, b_m, b_n
+function _kinetic_kernel(alpha, a_coord, la, ma, na, beta, b_coord, lb, mb, nb)
+    l0 = (2 * (lb + mb + nb) + 3) * _overlap_kernel(
+        alpha, a_coord, la, ma, na, beta, b_coord, lb, mb, nb
     )
     lplus2 = _overlap_kernel(
-        alpha, a_coord, a_l, a_m, a_n, beta, b_coord, b_l + 2, b_m, b_n
+        alpha, a_coord, la, ma, na, beta, b_coord, lb + 2, mb, nb
     ) + _overlap_kernel(
-        alpha, a_coord, a_l, a_m, a_n, beta, b_coord, b_l, b_m + 2, b_n
+        alpha, a_coord, la, ma, na, beta, b_coord, lb, mb + 2, nb
     ) + _overlap_kernel(
-        alpha, a_coord, a_l, a_m, a_n, beta, b_coord, b_l, b_m, b_n + 2
+        alpha, a_coord, la, ma, na, beta, b_coord, lb, mb, nb + 2
     )
-    lminus2 = b_l * (b_l - one(b_l)) * _overlap_kernel(
-        alpha, a_coord, a_l, a_m, a_n, beta, b_coord, b_l - 2, b_m, b_n
-    ) + b_m * (b_m - one(b_m)) * _overlap_kernel(
-        alpha, a_coord, a_l, a_m, a_n, beta, b_coord, b_l, b_m - 2, b_n
-    ) + b_n * (b_n - one(b_n)) * _overlap_kernel(
-        alpha, a_coord, a_l, a_m, a_n, beta, b_coord, b_l, b_m, b_n - 2
+    lminus2 = lb * (lb - one(lb)) * _overlap_kernel(
+        alpha, a_coord, la, ma, na, beta, b_coord, lb - 2, mb, nb
+    ) + mb * (mb - one(mb)) * _overlap_kernel(
+        alpha, a_coord, la, ma, na, beta, b_coord, lb, mb - 2, nb
+    ) + nb * (nb - one(nb)) * _overlap_kernel(
+        alpha, a_coord, la, ma, na, beta, b_coord, lb, mb, nb - 2
     )
 
     return beta * (l0 - 2 * beta * lplus2) - lminus2 / 2
