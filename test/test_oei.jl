@@ -7,17 +7,6 @@
     )
     basis = build_sto3g(water)
 
-    # Consistency checks for kernels
-    @test GaussianBasisFunctions._overlap_kernel(
-        0.1, [1.0, 2.0, 0.0], 1, 1, 0, 0.2, [2.0, 1.0, 0.0], 0, 1, 0
-    ) == 28.55923564396704
-    @test GaussianBasisFunctions._kinetic_kernel(
-        0.1, [1.0, 2.0, 0.0], 1, 1, 0, 0.2, [2.0, 1.0, 0.0], 0, 1, 0
-    ) == 12.234093080988277
-    @test GaussianBasisFunctions._nuclear_kernel(
-        NuclearOperator(water), 0.1, [1.0, 2.0, 0.0], 1, 1, 0, 0.2, [2.0, 1.0, 0.0], 0, 1, 0
-    ) == -48.42642469823712
-
     # Reference tests for pairs of basis functions
     @test oei(basis[1], basis[1], OverlapOperator()) ≈ 1.0
     @test oei(basis[1], basis[end], OverlapOperator()) ≈ 0.056954 atol=5e-7

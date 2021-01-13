@@ -25,8 +25,6 @@ include("auxiliary.jl")
 
 # Integrals
 include("oei.jl")
-include("overlap.jl")
-include("kinetic.jl")
-include("nuclear.jl")
+include("oei_kernels.jl")
 
 end
