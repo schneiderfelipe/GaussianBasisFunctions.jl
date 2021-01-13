@@ -29,6 +29,8 @@ end
 Compute a one electron matrix element for a pair of basis functions.
 """
 function oei(a::GaussianBasisFunction, b::GaussianBasisFunction, operator::AbstractOperator)
+    pa, pb = similar(a.coord), similar(b.coord)
+
     res = zero(a.coeffs[1])
     for i in 1:length(a)
         alpha = a.alphas[i]
@@ -39,8 +41,8 @@ function oei(a::GaussianBasisFunction, b::GaussianBasisFunction, operator::Abstr
             beta = b.alphas[j]
             N_b = _normalization_constant(beta, b.l, b.m, b.n)
 
-            term += b.coeffs[j] * N_b * integral_kernel(
-                operator, alpha, a.coord, a.l, a.m, a.n, beta, b.coord, b.l, b.m, b.n
+            term += b.coeffs[j] * N_b * integral_kernel!(
+                pa, pb, operator, alpha, a.coord, a.l, a.m, a.n, beta, b.coord, b.l, b.m, b.n
             )
         end
 
