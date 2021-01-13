@@ -17,6 +17,20 @@ function doublefactorial(n)
 		return one(n)
 	elseif n < 4
 		return n
+	elseif n == 4
+		return 8
+	elseif n == 5
+		return 15
+	elseif n == 6
+		return 48
+	elseif n == 7
+		return 105
+	elseif n == 8
+		return 384
+	elseif n == 9
+		return 945
+	elseif n == 10
+		return 3840
 	end
 
 	return n * doublefactorial(n - one(n) - one(n))
