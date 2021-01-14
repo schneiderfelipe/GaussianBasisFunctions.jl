@@ -11,6 +11,7 @@ using Test
     include("test_dist.jl")
     include("test_build_sto3g.jl")
     include("test_auxiliary.jl")
+    include("test_boys.jl")
 
     # Integrals
     include("test_oei.jl")

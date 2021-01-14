@@ -93,19 +93,3 @@ function _vlri(l, r, i, la, lb, pax, pbx, pcx, epsilon)
 
     return m * p * f * _ck(l, la, lb, pax, pbx)
 end
-
-raw"""
-    boys(ν, x)
-
-Compute Boys function $F_\nu (x)$.
-"""
-function boys(ν, x)
-    if x < 1e-3
-        return one(x) / (2ν + one(ν)) - x / (2ν + 3)
-    elseif x > 10
-        # http://shivupa.github.io/blog/efficient-evaluation-of-the-boys-function
-        return doublefactorial(2ν - one(ν)) * sqrt(π / (x^(2ν + one(ν)))) / (2^(ν + one(ν)))
-    end
-
-    return gamma_inc(ν + 0.5, x, 0)[1] * gamma(ν + 0.5) / (2 * x^(ν + 0.5))
-end

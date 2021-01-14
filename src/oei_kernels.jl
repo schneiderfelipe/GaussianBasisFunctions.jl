@@ -111,7 +111,8 @@ function integral_kernel!(pa, pb, operator::NuclearOperator, alpha, a_coord, la,
                             for k in 0:fld(nm2t, 2)
                                 vntk = _vlri(n, t, k, na, nb, pa[3], pb[3], pc[3], epsilon)
 
-                                f = boys(lm2r + mm2s + nm2t - i - j - k, x)
+                                n = lm2r + mm2s + nm2t - i - j - k
+                                f = boys(n, x)
                                 c_term += vlri * vmsj * vntk * f
                             end
                         end

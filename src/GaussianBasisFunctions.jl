@@ -1,6 +1,7 @@
 module GaussianBasisFunctions
 
 using LinearAlgebra: Symmetric
+using SpecialFunctions: erf
 using SpecialFunctions: gamma
 using SpecialFunctions: gamma_inc
 
@@ -12,6 +13,7 @@ export NuclearOperator
 
 export build_sto3g
 
+export boys
 export oei
 
 # Types
@@ -22,6 +24,7 @@ include("operators.jl")
 include("utils.jl")
 include("build_sto3g.jl")
 include("auxiliary.jl")
+include("boys.jl")
 
 # Integrals
 include("oei.jl")
