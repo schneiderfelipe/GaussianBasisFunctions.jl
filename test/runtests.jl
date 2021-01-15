@@ -12,6 +12,7 @@ using Test
     include("test_build_sto3g.jl")
     include("test_auxiliary.jl")
     include("test_boys.jl")
+    include("test_gtensor.jl")
 
     # Integrals
     include("test_oei.jl")

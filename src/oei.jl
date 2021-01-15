@@ -18,7 +18,7 @@ function oei(basis::AbstractVector{<:AbstractBasisFunction}, operator::AbstractO
 
     # We defined above only the lower triangular part, so we return a wrapped
     # symmetric matrix.
-    return Symmetric(M)
+    return Hermitian(M)
 end
 
 # TODO: create a generic, numerically integrated, fallback for any callable
