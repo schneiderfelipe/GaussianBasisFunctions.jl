@@ -15,12 +15,14 @@ export GaussianBasisFunction
 export GTensor
 export OverlapOperator
 export KineticOperator
+export CoulombOperator
 export NuclearOperator
 
 export build_sto3g
 
 export boys
 export oei
+export tei
 
 # Types
 include("types.jl")
@@ -32,9 +34,11 @@ include("build_sto3g.jl")
 include("auxiliary.jl")
 include("boys.jl")
 include("gtensor.jl")
+include("loops.jl")
 
 # Integrals
 include("oei.jl")
-include("oei_kernels.jl")
+include("tei.jl")
+include("kernels.jl")
 
 end

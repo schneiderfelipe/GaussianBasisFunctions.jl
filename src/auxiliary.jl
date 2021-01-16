@@ -1,46 +1,40 @@
 """
-    _normalization_constant(alpha, l, m, n)
+    gaussian_norm(α, l, m, n)
 
-Compute a Gaussian primitive normalization constant.
+Compute the normalization constant for a Gaussian primitive basis function.
 """
-function _normalization_constant(alpha, l, m, n)
-    N = sqrt((2alpha / π)^3)
-    N *= (4alpha)^(l + m + n)
-    N /= doublefactorial(2l - one(l)) * doublefactorial(2m - one(m)) * doublefactorial(2n - one(n))
+@inline function gaussian_norm(α, l::Int, m::Int, n::Int)
+    N = sqrt((2α / π)^3) * (4α)^(l + m + n)
+    κ = doublefactorial(2l - 1) * doublefactorial(2m - 1) * doublefactorial(2n - 1)
 
-    return sqrt(N)
+    return sqrt(N / κ)
 end
 
 """
-    _third_center(alpha, alpha_coord, beta, beta_coord, gamma)
+    gpt!(p_coord, α, α_coord, β, β_coord)
 
-Compute a weighted center for two Gaussian primitives.
+Compute the relevant quantities from the Gaussian product theorem for two Gaussian primitives.
 
-This is the center from the Gaussian product theorem. `gamma` must be equal to
-`alpha + beta`.
+`p_coord` receives the coordinate of the new Gaussian center. `γ = α + β` and
+`Kₚ`, the center from the Gaussian product theorem, are returned as values.
 """
-@inline function _third_center(alpha, alpha_coord, beta, beta_coord, gamma)
-    return @. (alpha * alpha_coord + beta * beta_coord) / gamma
-end
+@inline function gpt!(p_coord::AbstractVector, α::Real, α_coord::AbstractVector, β::Real, β_coord::AbstractVector)
+    γ = α + β
 
-# TODO: this could be merged into the above function and work inplace?
-"""
-    _gaussian_prod_factor(alpha, alpha_coord, beta, beta_coord, gamma)
-
-Compute the factor from the Gaussian product theorem.
-"""
-function _gaussian_prod_factor(alpha, alpha_coord, beta, beta_coord, gamma)
     # TODO: the following has an extra unneeded ^2
-    return exp(-(alpha * beta / gamma) * dist(alpha_coord, beta_coord)^2)
+    Kₚ = exp(-(α * β / γ) * dist(α_coord, β_coord)^2)
+
+    @. p_coord = (α * α_coord + β * β_coord) / γ
+    return Kₚ, γ
 end
 
-"""
-    _ck(k, l, m, a, b)
+raw"""
+    c(k, l, m, a, b)
 
-Compute the c_k auxiliary coefficient.
+Compute the $c_k$ auxiliary coefficient.
 """
-@fastmath function _ck(k, l, m, a, b)
-    res = zero(a)
+@inline @fastmath function c(k, l, m, a, b)
+    I = zero(a)
 
     # TODO: this can be implemented in a single loop, instead of
     # a double loop plus if
@@ -53,43 +47,77 @@ Compute the c_k auxiliary coefficient.
                 m_choose_j = binomial(m, j)
                 b_at_m_minus_j = b^(m - j)
 
-                res += l_choose_i * a_at_l_minus_i * m_choose_j * b_at_m_minus_j
+                I += l_choose_i * a_at_l_minus_i * m_choose_j * b_at_m_minus_j
             end
         end
     end
 
-    return res
+    return I
 end
 
 """
-    _Si(la, lb, pax, pbx, gamma)
+    Sᵢ(la, lb, pax, pbx, γ)
 
-Compute the _Si auxiliary term.
+Compute the Sᵢ auxiliary term.
 """
-function _Si(la, lb, pax, pbx, gamma)
-    res = zero(pax)
+@inline @fastmath function Sᵢ(la, lb, pax, pbx, γ)
+    I = zero(pax)
 
     for k in 0:fld(la + lb, 2)
         double_k = 2k
-        factor = sqrt(π / gamma) * doublefactorial(double_k - one(k)) / (2gamma)^k
-        res += factor * _ck(double_k, la, lb, pax, pbx)
+        κ = sqrt(π / γ) * doublefactorial(double_k - 1) / (2γ)^k
+        I += κ * c(double_k, la, lb, pax, pbx)
     end
 
-    return res
+    return I
 end
 
 raw"""
-    _vlri(l, r, i, la, lb, pax, pbx, pcx, epsilon)
+    θ(l, la, lb, a, b, γ)
+
+Compute the $\theta$ auxiliary coefficient.
+"""
+@inline @fastmath function θ(l, la, lb, a, b, r, γ)
+    κ = factorial(l) / (factorial(r) * factorial(l - 2r))
+    return κ * c(l, la, lb, a, b) * γ^(r - l)
+end
+
+raw"""
+    v(indices::Tuple{Int, Int, Int}, la, lb, pax, pbx, pcx, ϵ)
 
 Compute the $v_{lri}$ auxiliary coefficient.
 """
-function _vlri(l, r, i, la, lb, pax, pbx, pcx, epsilon)
-    m = (-one(l))^(l + i)
+@inline @fastmath function v(indices::Tuple{Int, Int, Int}, la, lb, pax, pbx, pcx, ϵ)
+    l, r, i = indices
+
+    m = (-1)^(l + i)
 
     t = r + i
     k = l - 2t
-    p = pcx^k * epsilon^t
-    f =  factorial(l) / (factorial(r) * factorial(i) * factorial(k))
+    p = pcx^k * ϵ^t
 
-    return m * p * f * _ck(l, la, lb, pax, pbx)
+    κ = factorial(l) / (factorial(r) * factorial(i) * factorial(k))
+    f = oftype(ϵ, κ)
+
+    return m * p * f * c(l, la, lb, pax, pbx)
+end
+
+raw"""
+    g(indices::Tuple{Int, Int, Int, Int, Int}, la, lb, lc, ld, pax, pbx, qcx, qdx, pqx, γp, γq)
+
+Compute the $g_{l_P l_Q r_P r_Q i}$ auxiliary coefficient.
+"""
+@inline @fastmath function g(indices::Tuple{Int, Int, Int, Int, Int}, la, lb, lc, ld, pax, pbx, qcx, qdx, pqx, γp, γq)
+    lp, lq, rp, rq, i = indices
+
+    δ = 1 / 4γp + 1 / 4γq
+
+    ℓ = lp + lq
+    m₁ = 2 * (rp + rq)
+    m₂ = ℓ - m₁
+    m₃ = m₂ - 2i
+
+    κ = factorial(m₂) / (factorial(i) * factorial(m₃))
+    I = (-1)^(lp + i) * θ(lp, la, lb, pax, pbx, rp, γp) * θ(lq, lc, ld, qcx, qdx, rq, γq)
+    return (κ * δ^(m₁ + i - ℓ) * pqx^m₃ / 2^(2ℓ - m₁)) * I
 end

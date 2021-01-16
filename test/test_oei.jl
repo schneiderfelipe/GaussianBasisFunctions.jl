@@ -7,12 +7,6 @@
     )
     basis = build_sto3g(water)
 
-    # Reference tests for pairs of basis functions
-    @test oei(basis[1], basis[1], OverlapOperator()) ≈ 1.0
-    @test oei(basis[1], basis[end], OverlapOperator()) ≈ 0.056954 atol=5e-7
-    @test oei(basis[2], basis[end], KineticOperator()) ≈ 0.139790 atol=5e-7
-    @test oei(basis[4], basis[end], NuclearOperator(water)) ≈ 2.251996 atol=5e-7
-
     # Reference tests for a complete basis set
     @test oei(basis, OverlapOperator()) ≈ [1.000000 0.236704 0.000000  0.000000  0.000000  0.056954  0.056954;
                                            0.236704 1.000000 0.000000  0.000000  0.000000  0.489792  0.489792;
@@ -35,4 +29,10 @@
                                                   0.020933   0.244043   0.000000   0.000000 -10.114965  1.974772  1.974772;
                                                  -1.846697  -4.034052   0.000000  -2.251996   1.974772 -5.944108 -1.832457;
                                                  -1.846697  -4.034052   0.000000   2.251996   1.974772 -1.832457 -5.944108] atol=4e-6
+
+    # Reference tests for pairs of basis functions
+    @test oei(basis[1], basis[1], OverlapOperator()) ≈ 1.0
+    @test oei(basis[1], basis[end], OverlapOperator()) ≈ 0.056954 atol=5e-7
+    @test oei(basis[2], basis[end], KineticOperator()) ≈ 0.139790 atol=5e-7
+    @test oei(basis[4], basis[end], NuclearOperator(water)) ≈ 2.251996 atol=2e-7
 end

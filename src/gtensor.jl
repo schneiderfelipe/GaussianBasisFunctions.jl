@@ -1,4 +1,4 @@
-struct GTensor{T<:Real, S<:AbstractMatrix{<:T}} <: AbstractArray{T, 4}
+struct GTensor{T<:Real, S<:AbstractMatrix{T}} <: AbstractArray{T, 4}
 	data::S  # n(n + 1)/2 × n(n + 1)/2 matrix with upper triangular stored
 	n::Int
 	uplo::Char
@@ -17,9 +17,7 @@ end
 
 function GTensor{T}(::UndefInitializer, n::Int, uplo::Symbol=:U) where {T<:Real}
 	d = fld(n * (n + 1), 2)
-	# BUG: https://discourse.julialang.org/t/using-parametric-type-inside-outer-parametric-constructor/53388?u=schneiderfelipe
-	# A = Matrix{T}(undef, d, d)
-	A = zeros(d, d)  # this should go away, but doing so breaks stuff
+	A = Matrix{T}(undef, d, d)
 	return GTensor(A, n, uplo)
 end
 

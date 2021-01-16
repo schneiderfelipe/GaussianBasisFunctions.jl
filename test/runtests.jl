@@ -16,5 +16,6 @@ using Test
 
     # Integrals
     include("test_oei.jl")
-    include("test_oei_kernels.jl")
+    include("test_tei.jl")
+    include("test_kernels.jl")
 end

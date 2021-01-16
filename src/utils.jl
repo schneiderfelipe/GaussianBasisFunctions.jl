@@ -10,11 +10,12 @@ This implementation might be memoized in the future.
 See [Combinatorics.jl](https://github.com/JuliaMath/Combinatorics.jl) for
 another implementation.
 """
-function doublefactorial(n)
+# NOTE: consider increasing the precomputations to 20
+@inline function doublefactorial(n::Int)
 	if n < -1
 		return zero(n)
 	elseif n < 1
-		return one(n)
+		return 1
 	elseif n < 4
 		return n
 	elseif n == 4
@@ -33,7 +34,7 @@ function doublefactorial(n)
 		return 3840
 	end
 
-	return n * doublefactorial(n - one(n) - one(n))
+	return n * doublefactorial(n - 2)
 end
 
 """
@@ -44,11 +45,20 @@ Compute the distance between vectors or Gaussian basis functions.
 The base implementation might change in the future, or use anoter package for
 it.
 """
-function dist(x, y)
+@inline function dist(x, y)
 	s = zero(x[1])
 	for i in 1:length(x)
 		s += (x[i] - y[i])^2
 	end
     return sqrt(s)
 end
-dist(a::GaussianBasisFunction, b::GaussianBasisFunction) = dist(a.coord, b.coord)
+@inline dist(a::GaussianBasisFunction, b::GaussianBasisFunction) = dist(a.coord, b.coord)
+
+# Find the triangular root of x
+# See also this trick: https://math.stackexchange.com/a/699050/408160
+@inline _trrt(x) = (sqrt(8x + one(x)) - one(x)) / 2
+
+# Create a Gaussian basis function with modified momenta
+@inline adjust_momenta(g, Δl, Δm, Δn) = GaussianBasisFunction(
+	g.coord, g.alphas, g.coeffs, g.l + Δl, g.m + Δm, g.n + Δn
+)

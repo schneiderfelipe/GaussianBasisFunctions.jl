@@ -36,10 +36,10 @@ It may be benefitial to also separate the angular momenta into integers `l`,
 struct GaussianBasisFunction{V, W, I} <: AbstractBasisFunction
 	coord::V
 	alphas::W
-	coeffs::W
-	l::I
-	m::I
-	n::I
+	coeffs::V  # ::V might become ::W after we substitute build_sto3g with a real basis set parser
+	l::Int
+	m::Int
+	n::Int
 end
 Base.length(a::GaussianBasisFunction) = length(a.coeffs)
 
