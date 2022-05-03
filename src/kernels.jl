@@ -56,7 +56,7 @@ Compute a nuclear matrix element between two primitive Gaussian basis functions.
 
 This overrides `p_coord`, `pa`, `pb` and `pc`.
 """
-function integral_kernel!((p_coord, pa, pb, pc), operator::NuclearOperator, a, b, i, j)
+@views function integral_kernel!((p_coord, pa, pb, pc), operator::NuclearOperator, a, b, i, j)
     α = a.alphas[i]
     β = b.alphas[j]
 

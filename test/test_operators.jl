@@ -4,16 +4,16 @@
     @test Ŝ == OverlapOperator()
     @test Ŝ === OverlapOperator()
 
-    K̂ = KineticOperator()
-    @test K̂ == K̂
-    @test K̂ == KineticOperator()
-    @test K̂ === KineticOperator()
+    T̂ = KineticOperator()
+    @test T̂ == T̂
+    @test T̂ == KineticOperator()
+    @test T̂ === KineticOperator()
 
     water = Molecule(
         [8, 1, 1],
         [0.00000  0.00000  0.22700;
-        0.00000  1.35300 -0.90800;
-        0.00000 -1.35300 -0.90800]',
+         0.00000  1.35300 -0.90800;
+         0.00000 -1.35300 -0.90800]',
     )
     basis = build_sto3g(water)
     V̂ = NuclearOperator(water)

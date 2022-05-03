@@ -20,7 +20,7 @@ function oei(
 
     scratch = create_scratch(operator)
     constant = create_constant(operator)
-    for j in 1:n, i in 1:j
+    @views for j in 1:n, i in 1:j
         M[i, j] = constant * oei!(scratch, basis[i], basis[j], operator)
     end
 

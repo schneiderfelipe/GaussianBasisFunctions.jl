@@ -32,7 +32,7 @@ function tei(
     # This loops over an upper triangular part of a matrix of size n(n + 1)/2 × n(n + 1)/2
     scratch = create_scratch(operator)
     constant = create_constant(operator)
-    for kl in 1:fld(n * (n + 1), 2)
+    @views for kl in 1:fld(n * (n + 1), 2)
         for ij in 1:kl
             # TODO: make a function for this triangular transformation.
             #

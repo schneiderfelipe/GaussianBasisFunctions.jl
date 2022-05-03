@@ -37,7 +37,7 @@ Compute the $c_k$ auxiliary coefficient.
     I = zero(a)
 
     # TODO: this can be implemented in a single loop, instead of
-    # a double loop plus if
+    # a double loop plus if, which could be faster.
     for i in 0:l
         l_choose_i = binomial(l, i)
         a_at_l_minus_i = a^(l - i)
